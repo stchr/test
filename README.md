@@ -4,13 +4,13 @@
 
 Um eine nachhaltige und erweiterbare Schnittstelle zu bekommen, sollen folgende Regeln eingehalten werden.
 
-## RESTful
+### RESTful
 
 - Eine URL identifiziert eine Ressource
 - URLs sollten Nomen enthalten, keine Verben
 - Ressourcen werden im Plural verwendet
 - HTTP-Verben benutzen, um Operationen mit Sammlungen und Elementen von Ressourcen durchzuführen:
-  -- **GET**: lesen
+-- **GET**: lesen
 -- **POST**: erstellen
 -- **PUT**: bearbeiten
 -- **DELETE**: löschen
@@ -18,26 +18,26 @@ Um eine nachhaltige und erweiterbare Schnittstelle zu bekommen, sollen folgende 
 - Lässt es sich nicht vermeiden, Operationen in die URL mit aufzunehmen, weil passende HTTP-Verben fehlen, sind diese unter dem Slug **actions** zu sammeln
 - Immer eine Versionsnummer beifügen
 
-## Stateless
+### Stateless
 
 Jede Anfrage steht für sich alleine, es gibt keine Sessions.
 Deshalb muss jede Anfrage Auth etc. erneut machen.
 
-## Versionierung
+### Versionierung
 
 Die API ist versioniert und innerhalb einer Version auch bei nachträglichen Änderungen komplett rückwärtskompatibel.
 Die Version ist eine Ganzzahl mit vorangestelltem v: v1, v2 etc.
 
-## Service-URL
+### Service-URL
 
 http://rfr.example.com/api/v1/
 
-## Datenformat/Codierung
+### Datenformat/Codierung
 
 - UTF8
 - JSON-only
 
-## Authentifizeirung/Identifizierung/Lizensierung
+### Authentifizeirung/Identifizierung/Lizensierung
 
 Um ein einfaches, aber gleichzeitig sicheres SSO zu realisieren, funktioniert die Authentifizierung folgendermaßen:
 
@@ -56,7 +56,7 @@ Es können auch Lizenzen für eigene Kunden-Clients (= kein User-Agent) definier
 
 ACHTUNG: Die Lizenzen sind KEINE CC-Lizenzen, da die API stateless ist!
 
-## Status-Codes
+### Status-Codes
 
 Folgende HTTP-Status-Codes werden als Info zu der Verarbeitung eines Requests zurückgegeben:
 
@@ -68,13 +68,13 @@ Folgende HTTP-Status-Codes werden als Info zu der Verarbeitung eines Requests zu
 - **401 Unauthorized**: Keine gültige Authentifizeierung oder ausstehende Freigabe durch Admin
 - **500 Internal Server Error**: Allgemeiner unerwarteter Fehler (Sollte nach Möglichkeit genauer mit entsprechendem 5xx-Code spezifiziert werden)
 
-## HTTP-Caching
+### HTTP-Caching
 
 **ETag**- oder **Last-Modified**-Header mitliefern, welche beim nächsten Request als **If-None-Match**-, bzw. **If-Modified-Since**-Header mitgeliefert werden können.
 
 Spart auf beiden Seiten (Server und Client) Zeit und Bandbreite.
 
-## Error-Handling
+### Error-Handling
 
 Es wird ein möglichst sinnvoller HTTP-Status-Code aus dem 4xx- oder 5xx-Bereich zurückgegeben.
 Dabei werden im Response-Body folgende JSON-Felder zurückgegeben: 
@@ -82,21 +82,21 @@ Dabei werden im Response-Body folgende JSON-Felder zurückgegeben:
 - **id**: Maschinenlesbare Fehler-ID (z.B. „not_found“)
 - **message**: Lesbare Fehlermeldung (z.B. „Das gewünschte Element konnte nicht gefunden werden.“)
 
-## Paginierung und Sortierung
+### Paginierung und Sortierung
 
 Es werden immer max. 50 Elemente geliefert. Es kann aber mit den GET-Parametern **limit** und **offset** der gewünschte Ergebnisbereich eingegrenzt werden.
 
 Oder: https://devcenter.heroku.com/articles/platform-api-reference#ranges
 
-## CORS
+### CORS
 
-**Access-Control-Allow-Origin: `*`** ist für die API immer für die benötigten HTTP-Methoden (HEAD, OPTIONS, GET, PUT; POST, DELETE) und HTTP-Header (User-Agent etc.) aktiviert, um Cross-Domain-Kommunikation zu ermöglichen
+`Access-Control-Allow-Origin: *` ist für die API immer für die benötigten HTTP-Methoden (HEAD, OPTIONS, GET, PUT; POST, DELETE) und HTTP-Header (User-Agent etc.) aktiviert, um Cross-Domain-Kommunikation zu ermöglichen
 
-## Request-Id
+### Request-Id
 
 Um ein Debugging durchführen zu können, immer eine eindeutige **Request-Id** als Response-Header mit schicken. Dieser kann von Client und Server geloggt werden.
 
-## Ressourcen und Attribute
+### Ressourcen und Attribute
 
 - Immer englische Schreibweise benutzen
 - Resourcen klein schreiben, trennen mit Divis (-) (z.B. time-roles)
@@ -108,7 +108,7 @@ Um ein Debugging durchführen zu können, immer eine eindeutige **Request-Id** a
 - FK-Beziehungen als geschachtelte Elemente zurück liefern { „id“: 1234“, „name“: “test“, „owner“: { „id“: 5678, „name“: „hans“ } }
 
 ## Administrators
-FIXME
+Arbeiten mit RFR-Admins
 
 ### Attributes
 <table>
@@ -119,36 +119,48 @@ FIXME
     <th>Example</th>
   </tr>
   <tr>
-    <td><strong>created_at</strong></td>
-    <td><em>date-time</em></td>
-    <td>when administrators was created</td>
-    <td><code>"2012-01-01T12:00:00Z"</code></td>
+    <td><strong>department</strong></td>
+    <td><em>string</em></td>
+    <td>Department (Abteilung)</td>
+    <td><code>"HR"</code></td>
+  </tr>
+  <tr>
+    <td><strong>email</strong></td>
+    <td><em>email</em></td>
+    <td>E mail</td>
+    <td><code>"j.doe@example.com"</code></td>
   </tr>
   <tr>
     <td><strong>id</strong></td>
-    <td><em>uuid</em></td>
-    <td>unique identifier of administrators</td>
-    <td><code>"01234567-89ab-cdef-0123-456789abcdef"</code></td>
+    <td><em>integer</em></td>
+    <td>unique identifier of admin</td>
+    <td><code>"1234"</code></td>
   </tr>
   <tr>
-    <td><strong>updated_at</strong></td>
-    <td><em>date-time</em></td>
-    <td>when administrators was updated</td>
-    <td><code>"2012-01-01T12:00:00Z"</code></td>
+    <td><strong>name</strong></td>
+    <td><em>string</em></td>
+    <td>Full name</td>
+    <td><code>"John Doe"</code></td>
+  </tr>
+  <tr>
+    <td><strong>username</strong></td>
+    <td><em>string</em></td>
+    <td>Unique Username</td>
+    <td><code>"JDoe"</code></td>
   </tr>
 </table>
 
 ### Administrators Create
-Create a new administrators.
+Create a new admin.
 
 ```
-POST /administratorss
+POST /admins
 ```
 
 
 #### Curl Example
 ```term
-$ curl -n -X POST https://api.hello.com/administratorss
+$ curl -n -X POST https://rfr.example.com/api/v1234/admins
 ```
 
 #### Response Example
@@ -157,22 +169,24 @@ HTTP/1.1 201 Created
 ```
 ```javascript```
 {
-  "created_at": "2012-01-01T12:00:00Z",
-  "id": "01234567-89ab-cdef-0123-456789abcdef",
-  "updated_at": "2012-01-01T12:00:00Z"
+  "id": "1234",
+  "name": "John Doe",
+  "email": "j.doe@example.com",
+  "department": "HR",
+  "username": "JDoe"
 }
 ```
 ### Administrators Delete
-Delete an existing administrators.
+Delete an existing admin.
 
 ```
-DELETE /administratorss/{administrators_id}
+DELETE /admins/{admin_id}
 ```
 
 
 #### Curl Example
 ```term
-$ curl -n -X DELETE https://api.hello.com/administratorss/$ADMINISTRATORS_ID
+$ curl -n -X DELETE https://rfr.example.com/api/v1234/admins/$ADMIN_ID
 ```
 
 #### Response Example
@@ -181,22 +195,24 @@ HTTP/1.1 200 OK
 ```
 ```javascript```
 {
-  "created_at": "2012-01-01T12:00:00Z",
-  "id": "01234567-89ab-cdef-0123-456789abcdef",
-  "updated_at": "2012-01-01T12:00:00Z"
+  "id": "1234",
+  "name": "John Doe",
+  "email": "j.doe@example.com",
+  "department": "HR",
+  "username": "JDoe"
 }
 ```
 ### Administrators Info
-Info for existing administrators.
+Info for existing admin.
 
 ```
-GET /administratorss/{administrators_id}
+GET /admins/{admin_id}
 ```
 
 
 #### Curl Example
 ```term
-$ curl -n -X GET https://api.hello.com/administratorss/$ADMINISTRATORS_ID
+$ curl -n -X GET https://rfr.example.com/api/v1234/admins/$ADMIN_ID
 ```
 
 #### Response Example
@@ -205,22 +221,24 @@ HTTP/1.1 200 OK
 ```
 ```javascript```
 {
-  "created_at": "2012-01-01T12:00:00Z",
-  "id": "01234567-89ab-cdef-0123-456789abcdef",
-  "updated_at": "2012-01-01T12:00:00Z"
+  "id": "1234",
+  "name": "John Doe",
+  "email": "j.doe@example.com",
+  "department": "HR",
+  "username": "JDoe"
 }
 ```
 ### Administrators List
-List existing administratorss.
+List existing admins.
 
 ```
-GET /administratorss
+GET /admins
 ```
 
 
 #### Curl Example
 ```term
-$ curl -n -X GET https://api.hello.com/administratorss
+$ curl -n -X GET https://rfr.example.com/api/v1234/admins
 ```
 
 #### Response Example
@@ -230,23 +248,25 @@ HTTP/1.1 200 OK
 ```javascript```
 [
   {
-    "created_at": "2012-01-01T12:00:00Z",
-    "id": "01234567-89ab-cdef-0123-456789abcdef",
-    "updated_at": "2012-01-01T12:00:00Z"
+    "id": "1234",
+    "name": "John Doe",
+    "email": "j.doe@example.com",
+    "department": "HR",
+    "username": "JDoe"
   }
 ]
 ```
 ### Administrators Update
-Update an existing administrators.
+Update an existing admin.
 
 ```
-PATCH /administratorss/{administrators_id}
+PUT /admins/{admin_id}
 ```
 
 
 #### Curl Example
 ```term
-$ curl -n -X PATCH https://api.hello.com/administratorss/$ADMINISTRATORS_ID
+$ curl -n -X PUT https://rfr.example.com/api/v1234/admins/$ADMIN_ID
 ```
 
 #### Response Example
@@ -255,163 +275,11 @@ HTTP/1.1 200 OK
 ```
 ```javascript```
 {
-  "created_at": "2012-01-01T12:00:00Z",
-  "id": "01234567-89ab-cdef-0123-456789abcdef",
-  "updated_at": "2012-01-01T12:00:00Z"
-}
-```
-
-## Users
-FIXME
-
-### Attributes
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Example</th>
-  </tr>
-  <tr>
-    <td><strong>created_at</strong></td>
-    <td><em>date-time</em></td>
-    <td>when users was created</td>
-    <td><code>"2012-01-01T12:00:00Z"</code></td>
-  </tr>
-  <tr>
-    <td><strong>id</strong></td>
-    <td><em>uuid</em></td>
-    <td>unique identifier of users</td>
-    <td><code>"01234567-89ab-cdef-0123-456789abcdef"</code></td>
-  </tr>
-  <tr>
-    <td><strong>updated_at</strong></td>
-    <td><em>date-time</em></td>
-    <td>when users was updated</td>
-    <td><code>"2012-01-01T12:00:00Z"</code></td>
-  </tr>
-</table>
-
-### Users Create
-Create a new users.
-
-```
-POST /userss
-```
-
-
-#### Curl Example
-```term
-$ curl -n -X POST https://api.hello.com/userss
-```
-
-#### Response Example
-```
-HTTP/1.1 201 Created
-```
-```javascript```
-{
-  "created_at": "2012-01-01T12:00:00Z",
-  "id": "01234567-89ab-cdef-0123-456789abcdef",
-  "updated_at": "2012-01-01T12:00:00Z"
-}
-```
-### Users Delete
-Delete an existing users.
-
-```
-DELETE /userss/{users_id}
-```
-
-
-#### Curl Example
-```term
-$ curl -n -X DELETE https://api.hello.com/userss/$USERS_ID
-```
-
-#### Response Example
-```
-HTTP/1.1 200 OK
-```
-```javascript```
-{
-  "created_at": "2012-01-01T12:00:00Z",
-  "id": "01234567-89ab-cdef-0123-456789abcdef",
-  "updated_at": "2012-01-01T12:00:00Z"
-}
-```
-### Users Info
-Info for existing users.
-
-```
-GET /userss/{users_id}
-```
-
-
-#### Curl Example
-```term
-$ curl -n -X GET https://api.hello.com/userss/$USERS_ID
-```
-
-#### Response Example
-```
-HTTP/1.1 200 OK
-```
-```javascript```
-{
-  "created_at": "2012-01-01T12:00:00Z",
-  "id": "01234567-89ab-cdef-0123-456789abcdef",
-  "updated_at": "2012-01-01T12:00:00Z"
-}
-```
-### Users List
-List existing userss.
-
-```
-GET /userss
-```
-
-
-#### Curl Example
-```term
-$ curl -n -X GET https://api.hello.com/userss
-```
-
-#### Response Example
-```
-HTTP/1.1 200 OK
-```
-```javascript```
-[
-  {
-    "created_at": "2012-01-01T12:00:00Z",
-    "id": "01234567-89ab-cdef-0123-456789abcdef",
-    "updated_at": "2012-01-01T12:00:00Z"
-  }
-]
-```
-### Users Update
-Update an existing users.
-
-```
-PATCH /userss/{users_id}
-```
-
-
-#### Curl Example
-```term
-$ curl -n -X PATCH https://api.hello.com/userss/$USERS_ID
-```
-
-#### Response Example
-```
-HTTP/1.1 200 OK
-```
-```javascript```
-{
-  "created_at": "2012-01-01T12:00:00Z",
-  "id": "01234567-89ab-cdef-0123-456789abcdef",
-  "updated_at": "2012-01-01T12:00:00Z"
+  "id": "1234",
+  "name": "John Doe",
+  "email": "j.doe@example.com",
+  "department": "HR",
+  "username": "JDoe"
 }
 ```
 
