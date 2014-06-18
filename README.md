@@ -10,7 +10,7 @@ Um eine nachhaltige und erweiterbare Schnittstelle zu bekommen, sollen folgende 
 - URLs sollten Nomen enthalten, keine Verben
 - Ressourcen werden im Plural verwendet
 - HTTP-Verben benutzen, um Operationen mit Sammlungen und Elementen von Ressourcen durchzuführen:
--- **GET**: lesen
+  -- **GET**: lesen
 -- **POST**: erstellen
 -- **PUT**: bearbeiten
 -- **DELETE**: löschen
@@ -90,7 +90,7 @@ Oder: https://devcenter.heroku.com/articles/platform-api-reference#ranges
 
 ## CORS
 
-**Access-Control-Allow-Origin: *** ist für die API immer für die benötigten HTTP-Methoden (HEAD, OPTIONS, GET, PUT; POST, DELETE) und HTTP-Header (User-Agent etc.) aktiviert, um Cross-Domain-Kommunikation zu ermöglichen
+**Access-Control-Allow-Origin: `*`** ist für die API immer für die benötigten HTTP-Methoden (HEAD, OPTIONS, GET, PUT; POST, DELETE) und HTTP-Header (User-Agent etc.) aktiviert, um Cross-Domain-Kommunikation zu ermöglichen
 
 ## Request-Id
 
