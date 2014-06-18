@@ -157,10 +157,28 @@ Create a new admin.
 POST /admins
 ```
 
+#### Optional Parameters
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Description</th>
+    <th>Example</th>
+  </tr>
+  <tr>
+    <td><strong>email</strong></td>
+    <td><em>email</em></td>
+    <td>E mail</td>
+    <td><code>"j.doe@example.com"</code></td>
+  </tr>
+</table>
+
 
 #### Curl Example
 ```term
 $ curl -n -X POST https://rfr.example.com/api/v1234/admins
+-H "Content-Type: application/json" \
+-d '{"email":"j.doe@example.com"}'
 ```
 
 #### Response Example
