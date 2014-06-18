@@ -107,8 +107,8 @@ Um ein Debugging durchführen zu können, immer eine eindeutige **Request-Id** a
 - Zeiten immer in UTC nach ISO8601
 - FK-Beziehungen als geschachtelte Elemente zurück liefern { „id“: 1234“, „name“: “test“, „owner“: { „id“: 5678, „name“: „hans“ } }
 
-## Administrators
-Arbeiten mit RFR-Admins
+## Room
+FIXME
 
 ### Attributes
 <table>
@@ -119,83 +119,104 @@ Arbeiten mit RFR-Admins
     <th>Example</th>
   </tr>
   <tr>
-    <td><strong>department</strong></td>
-    <td><em>string</em></td>
-    <td>Department (Abteilung)</td>
-    <td><code>"HR"</code></td>
+    <td><strong>id</strong></td>
+    <td><em>uuid</em></td>
+    <td>unique identifier of room</td>
+    <td><code>"01234567-89ab-cdef-0123-456789abcdef"</code></td>
   </tr>
   <tr>
-    <td><strong>email</strong></td>
-    <td><em>email</em></td>
-    <td>E mail</td>
-    <td><code>"j.doe@example.com"</code></td>
+    <td><strong>name</strong></td>
+    <td><em>string</em></td>
+    <td>when room was updated</td>
+    <td><code>"R123"</code></td>
+  </tr>
+</table>
+
+### Room Info
+Info for existing room.
+
+```
+GET /rooms/{room_id}
+```
+
+
+#### Curl Example
+```term
+$ curl -n -X GET https://rfr.example.com/api/v1234/rooms/$ROOM_ID
+```
+
+#### Response Example
+```
+HTTP/1.1 200 OK
+```
+```javascript```
+{
+  "id": "01234567-89ab-cdef-0123-456789abcdef",
+  "name": "R123"
+}
+```
+### Room List
+List existing rooms.
+
+```
+GET /rooms
+```
+
+
+#### Curl Example
+```term
+$ curl -n -X GET https://rfr.example.com/api/v1234/rooms
+```
+
+#### Response Example
+```
+HTTP/1.1 200 OK
+```
+```javascript```
+[
+  {
+    "id": "01234567-89ab-cdef-0123-456789abcdef",
+    "name": "R123"
+  }
+]
+```
+
+## Roomgroup
+FIXME
+
+### Attributes
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Description</th>
+    <th>Example</th>
   </tr>
   <tr>
     <td><strong>id</strong></td>
     <td><em>integer</em></td>
-    <td>unique identifier of admin</td>
+    <td>unique identifier</td>
     <td><code>"1234"</code></td>
   </tr>
   <tr>
     <td><strong>name</strong></td>
     <td><em>string</em></td>
-    <td>Full name</td>
-    <td><code>"John Doe"</code></td>
-  </tr>
-  <tr>
-    <td><strong>username</strong></td>
-    <td><em>string</em></td>
-    <td>Unique Username</td>
-    <td><code>"JDoe"</code></td>
+    <td>Name of the roomgroup</td>
+    <td><code>"Floor 3"</code></td>
   </tr>
 </table>
 
-### Administrators Create
-Create a new admin.
+### Roomgroup Create
+Create a new roomgroup.
 
 ```
-POST /admins
+POST /roomgroups
 ```
-
-#### Required Parameters
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Example</th>
-  </tr>
-  <tr>
-    <td><strong>email</strong></td>
-    <td><em>email</em></td>
-    <td>E mail</td>
-    <td><code>"j.doe@example.com"</code></td>
-  </tr>
-</table>
-
-
-#### Optional Parameters
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Example</th>
-  </tr>
-  <tr>
-    <td><strong>username</strong></td>
-    <td><em>string</em></td>
-    <td>Unique Username</td>
-    <td><code>"JDoe"</code></td>
-  </tr>
-</table>
 
 
 #### Curl Example
 ```term
-$ curl -n -X POST https://rfr.example.com/api/v1234/admins
--H "Content-Type: application/json" \
--d '{"email":"j.doe@example.com","username":"JDoe"}'
+$ curl -n -X POST https://rfr.example.com/api/v1234/roomgroups
 ```
 
 #### Response Example
@@ -205,23 +226,20 @@ HTTP/1.1 201 Created
 ```javascript```
 {
   "id": "1234",
-  "name": "John Doe",
-  "email": "j.doe@example.com",
-  "department": "HR",
-  "username": "JDoe"
+  "name": "Floor 3"
 }
 ```
-### Administrators Delete
-Delete an existing admin.
+### Roomgroup Delete
+Delete an existing roomgroup.
 
 ```
-DELETE /admins/{admin_id}
+DELETE /roomgroups/{roomgroup_id}
 ```
 
 
 #### Curl Example
 ```term
-$ curl -n -X DELETE https://rfr.example.com/api/v1234/admins/$ADMIN_ID
+$ curl -n -X DELETE https://rfr.example.com/api/v1234/roomgroups/$ROOMGROUP_ID
 ```
 
 #### Response Example
@@ -231,23 +249,20 @@ HTTP/1.1 200 OK
 ```javascript```
 {
   "id": "1234",
-  "name": "John Doe",
-  "email": "j.doe@example.com",
-  "department": "HR",
-  "username": "JDoe"
+  "name": "Floor 3"
 }
 ```
-### Administrators Info
-Info for existing admin.
+### Roomgroup Info
+Info for existing roomgroup.
 
 ```
-GET /admins/{admin_id}
+GET /roomgroups/{roomgroup_id}
 ```
 
 
 #### Curl Example
 ```term
-$ curl -n -X GET https://rfr.example.com/api/v1234/admins/$ADMIN_ID
+$ curl -n -X GET https://rfr.example.com/api/v1234/roomgroups/$ROOMGROUP_ID
 ```
 
 #### Response Example
@@ -257,23 +272,20 @@ HTTP/1.1 200 OK
 ```javascript```
 {
   "id": "1234",
-  "name": "John Doe",
-  "email": "j.doe@example.com",
-  "department": "HR",
-  "username": "JDoe"
+  "name": "Floor 3"
 }
 ```
-### Administrators List
-List existing admins.
+### Roomgroup List
+List existing roomgroups.
 
 ```
-GET /admins
+GET /roomgroups
 ```
 
 
 #### Curl Example
 ```term
-$ curl -n -X GET https://rfr.example.com/api/v1234/admins
+$ curl -n -X GET https://rfr.example.com/api/v1234/roomgroups
 ```
 
 #### Response Example
@@ -284,24 +296,21 @@ HTTP/1.1 200 OK
 [
   {
     "id": "1234",
-    "name": "John Doe",
-    "email": "j.doe@example.com",
-    "department": "HR",
-    "username": "JDoe"
+    "name": "Floor 3"
   }
 ]
 ```
-### Administrators Update
-Update an existing admin.
+### Roomgroup Update
+Update an existing roomgroup.
 
 ```
-PUT /admins/{admin_id}
+PATCH /roomgroups/{roomgroup_id}
 ```
 
 
 #### Curl Example
 ```term
-$ curl -n -X PUT https://rfr.example.com/api/v1234/admins/$ADMIN_ID
+$ curl -n -X PATCH https://rfr.example.com/api/v1234/roomgroups/$ROOMGROUP_ID
 ```
 
 #### Response Example
@@ -311,10 +320,7 @@ HTTP/1.1 200 OK
 ```javascript```
 {
   "id": "1234",
-  "name": "John Doe",
-  "email": "j.doe@example.com",
-  "department": "HR",
-  "username": "JDoe"
+  "name": "Floor 3"
 }
 ```
 
